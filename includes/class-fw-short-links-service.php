@@ -197,6 +197,18 @@ class FW_Short_Links_Service {
 	public static function site_conflict( $slug ) {
 		$prefix = self::settings()['link_prefix'];
 
+		// Subdirectory multisite: a path that is a subsite's address is routed to that
+		// subsite before this site ever sees it, so a link there could never fire.
+		if ( is_multisite() && ! is_subdomain_install() && is_main_site() ) {
+			$first = strtok( '' !== $prefix ? $prefix : $slug, '/' );
+			$site  = get_site_by_path( get_network()->domain, get_network()->path . $first . '/' );
+
+			if ( $site && ! is_main_site( $site->blog_id ) ) {
+				/* translators: %s: the subsite's address */
+				return sprintf( __( 'the address of the network site %s', 'fw' ), untrailingslashit( $site->domain . $site->path ) );
+			}
+		}
+
 		if ( '' !== $prefix ) {
 			// A prefixed link lives under its own path segment; only a page at
 			// exactly that path could collide.

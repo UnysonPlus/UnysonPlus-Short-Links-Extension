@@ -55,7 +55,7 @@ $manifest['description'] = __(
  *         `edit_short_links` / `manage_short_links` capabilities.
  */
 
-$manifest['version']    = '1.0.1';
+$manifest['version']    = '1.0.2';
 $manifest['display']    = true;
 $manifest['standalone'] = true;
 $manifest['thumbnail']  = 'thumbnail.svg';
